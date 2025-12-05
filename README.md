@@ -1,7 +1,7 @@
 # TP2 Authentification avec JWT
 
 ## Description
-Ce projet Spring Boot (Java 21) met en place une authentification stateless via JSON Web Token (JWT) en utilisant Spring Security. Les utilisateurs sont définis en mémoire (`user/password`, `admin/admin123`). Un login sur `/api/auth/login` retourne un JWT, utilisé ensuite en header `Authorization: Bearer ...` pour accéder aux endpoints protégés, par exemple `/api/hello`.
+Ce projet Spring Boot  met en place une authentification stateless via JSON Web Token (JWT) en utilisant Spring Security. Les utilisateurs sont définis en mémoire (`user/password`, `admin/admin123`). Un login sur `/api/auth/login` retourne un JWT, utilisé ensuite en header `Authorization: Bearer ...` pour accéder aux endpoints protégés, par exemple `/api/hello`.
 
 ## Dépendances principales
 - `spring-boot-starter-web` pour l’API REST.
@@ -14,7 +14,6 @@ Paramètres attendus dans `application.properties` (ou équivalent) :
 app.jwt.secret=<votre_cle_secrete_au_moins_256_bits>
 app.jwt.expiration-ms=3600000
 ```
-
 ## Endpoints
 - `POST /api/auth/login` : accepte un JSON `{ "username": "...", "password": "..." }`, authentifie et renvoie `{ "token": "<jwt>" }`.
 - `GET /api/hello` : protégé ; nécessite le header `Authorization: Bearer <jwt>`.
@@ -23,11 +22,21 @@ app.jwt.expiration-ms=3600000
 - `JwtAuthFilter` : extrait le JWT du header `Authorization`, valide le token via `JwtService` et peuple le `SecurityContext`.
 - `SecurityConfig` : autorise `/api/auth/**`, protège le reste, enregistre le filtre JWT avant `UsernamePasswordAuthenticationFilter`.
 
-## Tests réalisés (captures dans `screens/`)
-- `img1.png` : requête POST `/api/auth/login` avec corps JSON (`user/password`).
-- `img2.png` : réponse 200 avec le token JWT généré.
-- `img3.png` : requête GET `/api/hello` avec header `Authorization: Bearer <token>` (appel autorisé).
-- `img.png` : réponse 200 JSON de `/api/hello` confirmant l’accès protégé.
+## Tests réalisés
+- requête POST `/api/auth/login` avec corps JSON (`user/password`).
+
+![](screens/img1.png)
+
+- réponse 200 avec le token JWT généré.
+
+![](screens/img2.png)
+- requête GET `/api/hello` avec header `Authorization: Bearer <token>`.
+
+![](screens/img3.png)
+
+- réponse 200 JSON de `/api/hello` confirmant l’accès protégé.
+
+![](screens/img.png)
 
 ## Comment rejouer les tests
 1. Lancer l’application : `mvn spring-boot:run`.
